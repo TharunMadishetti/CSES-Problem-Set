@@ -9,36 +9,28 @@ public class ConcertTickets {
         int n = Integer.parseInt(s[0]);
         int m = Integer.parseInt(s[1]);
         s = br.readLine().split(" ");
-        int[] t = new int[n];
-        int[] cus = new int[m];
+        TreeMap<Integer, Integer> t = new TreeMap<>();
         for (int i = 0; i < n; i++) {
-            int idx = (i + 7) % n;
-            t[idx] = Integer.parseInt(s[i]);
+            int x = Integer.parseInt(s[i]);
+            t.put(x, t.getOrDefault(x, 0) + 1);
         }
         s = br.readLine().split(" ");
         for (int i = 0; i < m; i++) {
-            int idx = (i + 7) % m;
-            cus[idx] = Integer.parseInt(s[i]);
-        }
-        Arrays.sort(t);
-        int intmax = Integer.MAX_VALUE;
-        for (int i = 0; i < m; i++) {
-            int st = 0, e = n - 1, mid = i;
-            while (st <= e) {
-                mid = (st + e) / 2;
-                if (t[mid] > cus[i])
-                    e = mid - 1;
-                else if (t[mid] < cus[i])
-                    st = mid + 1;
-                else
-                    st = mid + 1;
-            }
-            if (t[mid] != intmax) {
-                System.out.println(t[mid]);
-                t[mid] = intmax;
+            int k = Integer.parseInt(s[i]);
+            if (t.floorKey(k) != null) {
+                int ck = t.floorKey(k);
+                System.out.println(ck);
+                t.put(ck, t.get(ck) - 1);
+                if (t.get(ck) == 0)
+                    t.remove(ck);
+            } else if (t.ceilingKey(k) != null && t.ceilingKey(k) == k) {
+                System.out.println(k);
+                t.put(k, t.get(k) - 1);
+                if (t.get(k) == 0)
+                    t.remove(k);
             } else
                 System.out.println(-1);
-            Arrays.sort(t);
         }
+
     }
 }

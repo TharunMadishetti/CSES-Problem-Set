@@ -15,7 +15,7 @@ void build(int l,int r,int i,int a[])
     build(mid+1,r,2*i+2,a);
     sg[i]=sg[2*i+1]+sg[2*i+2];
 }
-long query(int l,int r,int i,int j,int idx)
+long long query(int l,int r,int i,int j,int idx)
 {
     if(lazy[idx]!=0)
     {
@@ -44,12 +44,15 @@ void update(int l,int r,int idx,int low,int high,int val)
     return;
     if(low<=l && high>=r)
     {
-        lazy[idx]+=val;
+        sg[idx]+=(r-l+1)*val;
+        lazy[2*idx+1]+=val;
+        lazy[2*idx+2]+=val;
         return;
     }
     int mid=(l+r)/2;
     update(l,mid,2*idx+1,low,high,val);
     update(mid+1,r,2*idx+2,low,high,val); 
+    sg[idx]=sg[2*idx+1]+sg[2*idx+2];
 }
 int main()
 {
@@ -69,6 +72,8 @@ int main()
         {
             int a,b,u;
             cin>>a>>b>>u;
+            a--;
+            b--;
             update(0,n-1,0,a,b,u);
         }
         else 
